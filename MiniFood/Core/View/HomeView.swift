@@ -145,6 +145,94 @@ struct HomeView: View {
                         }
                     .padding(.top)
                     
+                    
+                    // You lastest orders
+                    HStack {
+                        HStack(spacing: 0) {
+                            Text("Your ")
+                                .foregroundStyle(Color("Black"))
+                            
+                            Text("Latest ")
+                                .foregroundStyle(.gray)
+                                .fontWeight(.regular)
+                            
+                            Text("Orders?")
+                                .foregroundStyle(Color("Black"))
+                        }
+                        .font(.system(size: 18, weight: .semibold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+//                        .padding(.top)
+                        
+                        Text("View all >")
+                            .font(.caption2)
+                            .foregroundStyle(.gray)
+                            .fontWeight(.regular)
+
+                        
+                    }
+                    .padding(.horizontal, 18)
+                    .padding(.top)
+                    
+                    ScrollView([.horizontal], showsIndicators: false) {
+                        HStack {
+
+                        ForEach(0..<10) { _ in
+                            ZStack() {
+                                RoundedRectangle(cornerRadius: 18)
+                                    .fill(Color("White"))
+                                    .frame(width: 300, height: 80)
+                                    .shadow(color: Color("Gray"), radius: 9, y: 6)
+
+                                HStack() {
+                                    RoundedRectangle(cornerRadius: 18)
+                                        .fill(Color("Primary"))
+                                        .frame(width: 50, height: 50)
+                                    
+                                    VStack(alignment: .leading) {
+                                        Text("Fast food category")
+                                            .font(.caption)
+                                            .fontWeight(.regular)
+                                            .foregroundStyle(.textSecondary.opacity(0.4))
+                                        Text("Burger king")
+                                        HStack {
+                                            Image(systemName: "clock")
+                                                .font(.system(size: 11, weight: .regular, design: .default))
+                                                .foregroundStyle(.textSecondary.opacity(0.4))
+                                            Text("45-60 mins")
+                                                .font(.caption)
+                                                .fontWeight(.regular)
+                                                .foregroundStyle(.textSecondary.opacity(0.4))
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    HStack {
+                                        Image(systemName: "star.fill")
+                                            .font(.system(size: 8, weight: .regular, design: .default))
+                                            .foregroundStyle(.yellow)
+                                        
+                                        Text("4.5")
+                                            .foregroundStyle(.white)
+                                            .font(.system(size: 8, weight: .regular, design: .default))
+
+                                    }
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 4)
+                                    .background(Color("Black"))
+                                    .clipShape(Capsule())
+                                    .offset(x: 10, y: -25)
+                                }
+                                .padding()
+                                
+
+                            }//
+                        }
+                        }
+                        .padding(.horizontal, 28)
+                        .frame(height: 100)
+                    }
+                  
                     Spacer()
                     
                 }
