@@ -38,9 +38,115 @@ struct HomeView: View {
                         
                     }
                     .padding(.horizontal, 16)
+                    
+                    ScrollView([.horizontal], showsIndicators: false,) {
+                        HStack(spacing: 12) {
+                                ForEach(0..<10) { _ in
+                                    VStack {
+                                        
+                                        Circle()
+                                            .frame(width: 50, height: 50)
+                                        
+                                        // Broke the line
+                                        Text("Fast Food")
+                                            .font(.caption)
+                                    }
+                                    .frame(maxWidth: 50)
+                                }
+                            }
+                        .padding(.horizontal, 18)
+                        
+                        }
+                    .padding(.top)
+                    
+                    
+                    // Virar uma exestetion 
+                    ScrollView([.horizontal], showsIndicators: false) {
+                        HStack(spacing: 28) {
+                                ForEach(0..<10) { _ in
+                                    VStack() {
+                                        
+                                        // Virar a imagem em destaque do restaurante da semana
+                                        RoundedRectangle(cornerRadius: 32)
+                                            .fill(Color.yellow)
+                                            .frame(width: 300, height: 200)
+                                            .overlay(alignment: Alignment.topLeading) {
+                                                HStack(alignment: .center) {
+                                                    HStack {
+                                                        Image(systemName: "clock.fill")
+                                                            .tint(.black)
+                                                            .foregroundStyle(.white)
+                                                        Text("~35 min")
+                                                            .font(.caption)
+                                                            .fontWeight(.regular)
+                                                            .foregroundStyle(.white)
+                                                        
+                                                    
+                                                    }
+                                                    .frame(width: 100, height: 32)
+                                                    .background(Material.ultraThin)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 42))
+                                                    .padding(.leading)
+                                                    .padding(.top)
+                                                    
+                                                    Spacer()
+                                                    
+                                                    HStack {
+                                                        Image(systemName: "truck.box")
+                                                            .tint(.black)
+                                                            .foregroundStyle(Color("TextPrimary").opacity(0.4))
+                                                            
+                                                        Text("~35 min")
+                                                            .font(.caption)
+                                                            .fontWeight(.regular)
+                                                            .foregroundStyle(Color("TextPrimary").opacity(0.4))
+                                                        
+
+                                                    }
+                                                    .padding(.top)
+                                                    .padding(.trailing)
+                                                }
+                                               
+
+
+                                            }
+                                        // Broke the line
+                                        HStack {
+                                            HStack {
+                                                Text("McDonalds *")
+                                                    .font(.subheadline)
+                                                    .foregroundStyle(.textSecondary)
+                                                Image(systemName: "flame.fill")
+                                                    .foregroundStyle(.yellow)
+                                            }
+                                        
+                                            Spacer()
+                                            
+                                            Text("New Open")
+                                                .font(.caption)
+                                                .foregroundStyle(Color("Tertiary"))
+                                                .frame(width: 90, height: 28)
+                                                .overlay {
+                                                    RoundedRectangle(cornerRadius: 32)
+                                                        .stroke(Color("Tertiary"), lineWidth: 1)
+                                                }
+
+
+                                                
+                                        }
+                                        .padding(.top, 2)
+                                        .padding(.horizontal)
+                                    }
+                                    .frame(maxWidth: 300)
+                                }
+                            }
+                        .padding(.horizontal, 18)
+                        
+                        }
+                    .padding(.top)
+                    
                     Spacer()
                     
-                    Text("Home")
                 }
                 .navigationTitle("What's Your Graving Today?")
                 .toolbarVisibility(.hidden, for: .navigationBar)
