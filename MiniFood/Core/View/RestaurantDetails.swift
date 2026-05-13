@@ -1,0 +1,18 @@
+//
+//  RestaurantDetails.swift
+//  MiniFood
+//
+//  Created by Thiago Lourenço on 12/05/26.
+//
+
+import SwiftUI
+
+struct RestaurantDetails: View {
+    var body: some View {
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    }
+}
+
+#Preview {
+    RestaurantDetails()
+}
