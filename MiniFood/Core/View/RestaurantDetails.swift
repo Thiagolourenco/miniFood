@@ -7,12 +7,319 @@
 
 import SwiftUI
 
+struct Product: Identifiable {
+    let id = UUID()
+    let image: String
+    let title: String
+    let subtitle: String
+    let price: String
+}
+
+enum FILTER_SELECTED: String, CaseIterable {
+    case PICKS_FOR_YOU = "PICKS_FOR_YOU"
+    case NEW_IN = "NEW_IN"
+    case POPULAR = "POPULAR"
+}
+
 struct RestaurantDetails: View {
+    @Environment(\.dismiss) var goBack
+    @State private var showFilter: Bool = false
+    @State private var filterSelected: FILTER_SELECTED = .PICKS_FOR_YOU
+    
+    let columns: [GridItem] = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
+    
+    let products: [Product] = [
+        .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99"),
+        .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99"),
+        .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99")
+    ]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ZStack {
+                Color.background.ignoresSafeArea()
+                
+                VStack {
+                    header
+                    
+                    cardAboutRestaurant
+                    
+                    filter
+                    
+                    listProducts
+                    Spacer()
+                }
+            }
+            .toolbarVisibility(.hidden, for: .navigationBar)
+            
+        }
+        
     }
 }
+
+// See, if I can put the extension in another files
+    extension RestaurantDetails {
+        private var header: some View {
+            HStack {
+                Button {
+                    goBack()
+                } label: {
+                    Image(systemName: "arrow.left")
+                        .foregroundStyle(.textSecondary)
+                        .font(.system(size: 14))
+                }
+                .frame(width: 40, height: 40)
+                .background(Color("White"))
+                .clipShape(Circle())
+                .shadow(color: Color("Border") ,radius: 6, y: 6)
+                
+                Spacer()
+                
+                HStack {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "heart")
+                            .foregroundStyle(.textSecondary)
+                            .font(.system(size: 14))
+                    }
+                    .frame(width: 40, height: 40)
+                    .background(Color("White"))
+                    .clipShape(Circle())
+                    .shadow(color: Color("Border") ,radius: 6, y: 6)
+                    
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.textSecondary)
+                            .font(.system(size: 14))
+                    }
+                    .frame(width: 40, height: 40)
+                    .background(Color("White"))
+                    .clipShape(Circle())
+                    .shadow(color: Color("Border") ,radius: 6, y: 6)
+                }
+            }
+            .padding(.horizontal, 32)
+        }
+        
+        private var listProducts: some View {
+            // montar as colunas de produtos toda a tela é envolta do scrollView
+            LazyVGrid(columns: columns, spacing: 18) {
+                ForEach(products) { item in
+                    RoundedRectangle(cornerRadius: 8)
+                        .frame(width: 170, height: 200)
+                }
+            }
+            .padding(.horizontal)
+        }
+        
+        private var cardAboutRestaurant: some View {
+            ZStack {
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color("White"))
+                    .frame(height: 150)
+                    .frame(maxWidth: .infinity)
+                    .shadow(color: Color("Gray"), radius: 2, y: 8)
+                
+                VStack {
+                    HStack() {
+                        RoundedRectangle(cornerRadius: 12)
+                            .frame(width: 100, height: 90)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Fast Food company")
+                                .font(.system(size: 8, weight: .regular, design: .default))
+                                .foregroundStyle(.gray.opacity(0.5))
+                            Text("McDonnalds")
+                                .font(.headline)
+                                .foregroundStyle(.textPrimary)
+                            HStack {
+                                Image(systemName: "clock")
+                                    .foregroundStyle(.gray.opacity(0.5))
+                                    .font(.system(size: 16, weight: .regular, design: .default))
+                                Text("45-60 mins")
+                                    .font(.footnote)
+                                    .foregroundStyle(.gray.opacity(0.5))
+                            }
+                        }
+                        .padding(.leading, 8)
+                        
+                        Spacer()
+                        
+                        VStack {
+                            
+                            HStack {
+                                Image(systemName: "star.fill")
+                                    .font(.system(size: 8, weight: .regular, design: .default))
+                                    .foregroundStyle(.yellow)
+                                
+                                Text("4.5")
+                                    .foregroundStyle(.white)
+                                    .font(.system(size: 8, weight: .regular, design: .default))
+                                
+                            }
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .background(Color("Black"))
+                            .clipShape(Capsule())
+                            .offset(y: -10)
+                            
+                            Spacer()
+                            
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "arrow.right")
+                                    .font(.system(size: 16, weight: .regular, design: .default))
+                                    .foregroundStyle(.white)
+                                    .frame(width: 40, height: 40)
+                                    .background(Color("Tertiary"))
+                                    .clipShape(Circle())
+                                    .offset(y: 15)
+                                
+                            }
+                        }
+                    }
+                    
+                    HStack {
+                        Image(systemName: "truck.box")
+                            .foregroundStyle(Color("Tertiary"))
+                            .font(.system(size: 12, weight: .regular, design: .default))
+                        Text("Get your first 4 delivered free")
+                            .font(.caption)
+                            .foregroundStyle(Color("Tertiary"))
+                    }
+                    .padding(.vertical, 8)
+                    .padding(.leading, 14)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color("Gray").opacity(0.6))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.bottom)
+                    
+                    
+                }
+                .padding()
+                .padding(.top)
+                .frame(height: 90)
+            }
+            .padding(.horizontal, 18)
+            .padding(.bottom, 8)
+            .padding(.top)
+            
+        }
+        
+        private var filter: some View {
+            HStack {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        showFilter.toggle()
+                    }
+                } label: {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 24, weight: .regular, design: .default))
+                        .foregroundStyle(.white)
+                        .frame(width: 50, height: 50)
+                        .background(.black)
+                        .clipShape(Circle())
+                }
+                
+                if !showFilter {
+                    HStack {
+                        Text("Picks for you")
+                            .font(.headline)
+                            .foregroundStyle(filterSelected == FILTER_SELECTED.PICKS_FOR_YOU ? .white : Color("Black700").opacity(0.2))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 6)
+                            .background(
+                                Capsule()
+                                    .fill(filterSelected == FILTER_SELECTED.PICKS_FOR_YOU ? Color("Primary") : Color("White").opacity(0))
+                            )
+                            .overlay {
+                                Capsule()
+                                    .stroke(
+                                        filterSelected == .PICKS_FOR_YOU
+                                        ? Color("Primary")
+                                        : Color("Black700").opacity(0.2),
+                                        lineWidth: 2
+                                    )
+
+                            }
+                        
+                            .onTapGesture {
+                                withAnimation(.easeIn(duration: 0.3)) {
+                                    filterSelected = .PICKS_FOR_YOU
+                                }
+                            }
+                        Text("New in")
+                            .font(.headline)
+                            .foregroundStyle(filterSelected == FILTER_SELECTED.NEW_IN ? .white : Color("Black700").opacity(0.2))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 6)
+                            .background(
+                                Capsule()
+                                    .fill(filterSelected == FILTER_SELECTED.NEW_IN ? Color("Primary") : Color("White").opacity(0))
+                            )
+                            .overlay {
+                                Capsule()
+                                    .stroke(
+                                        filterSelected == .NEW_IN
+                                        ? Color("Primary")
+                                        : Color("Black700").opacity(0.2),
+                                        lineWidth: 2
+                                    )
+
+                            }
+                            .onTapGesture {
+                                withAnimation(.easeIn(duration: 0.3)) {
+                                    filterSelected = .NEW_IN
+                                }
+                            }
+                        
+                        Text("Popular")
+                            .font(.headline)
+                            .foregroundStyle(filterSelected == FILTER_SELECTED.POPULAR ? .white : Color("Black700").opacity(0.2))
+
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 6)
+                            .background(
+                                Capsule()
+                                    .fill(filterSelected == FILTER_SELECTED.POPULAR ? Color("Primary") : Color("White").opacity(0))
+                            )
+                            .overlay {
+                                Capsule()
+                                    .stroke(
+                                        filterSelected == .POPULAR
+                                        ? Color("Primary")
+                                        : Color("Black700").opacity(0.2),
+                                        lineWidth: 2
+                                    )
+
+                            }
+                            .onTapGesture {
+                                withAnimation(.easeIn(duration: 0.3)) {
+                                    filterSelected = .POPULAR
+                                }
+                            }
+                        
+                    }
+                }
+               
+
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading)
+            .padding(.bottom, 8)
+        }
+    }
+
+
 
 #Preview {
     RestaurantDetails()
 }
+
