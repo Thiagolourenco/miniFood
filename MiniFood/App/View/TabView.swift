@@ -62,30 +62,7 @@ struct MainTabView: View {
             .background(Color("White"))
             .shadow(color: Color("Black").opacity(0.4), radius: 2, y: 2)
         }
-        
-//        TabView {
-//            HomeView()
-//                .tabItem {
-//                    Label("Home", systemImage: "house")
-//                }
-//            Text("Orders")
-//                .tabItem {
-//                    Label("Orders", systemImage: "cart")
-//                }
-//            Text("Privacy")
-//                .tabItem {
-//                    Label("Privacy", systemImage: "lock.shield")
-//                }
-//            Text("Profile")
-//                .tabItem {
-//                    Label("Profile", systemImage: "person")
-//                }
-//            Text("Settings")
-//                .tabItem {
-//                    Label("Settings", systemImage: "gear")
-//                }
-//        }
-//        .tint(Color("Primary"))
+
     }
 }
 

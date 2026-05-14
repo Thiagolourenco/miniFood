@@ -1,18 +1,18 @@
 //
-//  CardItem.swift
+//  ProductDetail.swift
 //  MiniFood
 //
-//  Created by Thiago Lourenço on 13/05/26.
+//  Created by Thiago Lourenço on 14/05/26.
 //
 
 import SwiftUI
 
-struct CardItem: View {
+struct ProductDetail: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    CardItem()
+    ProductDetail()
 }

@@ -33,8 +33,11 @@ struct RestaurantDetails: View {
     
     let products: [Product] = [
         .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99"),
+        .init(image: "burguer1", title: "Chicken-burger", subtitle: "Chicken-burger, big fries, coca-cola", price: "$8,99"),
+        .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99"),
         .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99"),
         .init(image: "burguer1", title: "Cheese-burger menu", subtitle: "Cheese-burger, big fries, coca-cola", price: "$8,99")
+
     ]
     
     var body: some View {
@@ -42,16 +45,20 @@ struct RestaurantDetails: View {
             ZStack {
                 Color.background.ignoresSafeArea()
                 
-                VStack {
-                    header
-                    
-                    cardAboutRestaurant
-                    
-                    filter
-                    
-                    listProducts
-                    Spacer()
+                ScrollView(showsIndicators: false) {
+                    VStack {
+                        header
+                        
+                        cardAboutRestaurant
+                        
+                        filter
+                        
+                        listProducts
+                        Spacer()
+                    }
                 }
+                .padding(.bottom)
+             
             }
             .toolbarVisibility(.hidden, for: .navigationBar)
             
@@ -108,15 +115,34 @@ struct RestaurantDetails: View {
         }
         
         private var listProducts: some View {
-            // montar as colunas de produtos toda a tela é envolta do scrollView
-            LazyVGrid(columns: columns, spacing: 18) {
-                ForEach(products) { item in
-                    RoundedRectangle(cornerRadius: 8)
-                        .frame(width: 170, height: 200)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Picks for you")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.textPrimary)
+                    Image(systemName: "flame.fill")
+                        .foregroundStyle(.yellow)
                 }
+                
+                Text("Trending items we think you love")
+                    .font(.footnote)
+                    .fontWeight(.regular)
+                    .foregroundStyle(.textSecondary.opacity(0.5))
+                
+                // montar as colunas de produtos toda a tela é envolta do scrollView
+                LazyVGrid(columns: columns, spacing: 18) {
+                    ForEach(products) { item in
+                        CardItem(nameFood: item.title, completementFood: item.subtitle, priceFood: item.price)
+                    }
+                }
+                .padding(.top, 8)
+                .padding(.bottom, 100)
             }
             .padding(.horizontal)
-        }
+
+            }
+         
         
         private var cardAboutRestaurant: some View {
             ZStack {
@@ -222,19 +248,31 @@ struct RestaurantDetails: View {
                 } label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                         .font(.system(size: 24, weight: .regular, design: .default))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(showFilter ? .white : .gray.opacity(0.4))
                         .frame(width: 50, height: 50)
-                        .background(.black)
+                        .background(showFilter ? .black : .white.opacity(0))
                         .clipShape(Circle())
+                        .overlay {
+                            if !showFilter {
+                                Circle()
+                                    .stroke(.gray.opacity(0.4), lineWidth: 2)
+                            }
+                        }
+                        .scaleEffect(showFilter ? 1.05 : 1)
+                        .animation(
+                                .spring(response: 0.3, dampingFraction: 0.7),
+                                value: showFilter
+                            )
                 }
                 
-                if !showFilter {
+                if showFilter {
                     HStack {
+                        // Turn a generic view
                         Text("Picks for you")
                             .font(.headline)
                             .foregroundStyle(filterSelected == FILTER_SELECTED.PICKS_FOR_YOU ? .white : Color("Black700").opacity(0.2))
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 6)
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 8)
                             .background(
                                 Capsule()
                                     .fill(filterSelected == FILTER_SELECTED.PICKS_FOR_YOU ? Color("Primary") : Color("White").opacity(0))
@@ -258,8 +296,8 @@ struct RestaurantDetails: View {
                         Text("New in")
                             .font(.headline)
                             .foregroundStyle(filterSelected == FILTER_SELECTED.NEW_IN ? .white : Color("Black700").opacity(0.2))
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 6)
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 8)
                             .background(
                                 Capsule()
                                     .fill(filterSelected == FILTER_SELECTED.NEW_IN ? Color("Primary") : Color("White").opacity(0))
@@ -284,8 +322,8 @@ struct RestaurantDetails: View {
                             .font(.headline)
                             .foregroundStyle(filterSelected == FILTER_SELECTED.POPULAR ? .white : Color("Black700").opacity(0.2))
 
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 6)
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 8)
                             .background(
                                 Capsule()
                                     .fill(filterSelected == FILTER_SELECTED.POPULAR ? Color("Primary") : Color("White").opacity(0))
@@ -315,6 +353,8 @@ struct RestaurantDetails: View {
             .padding(.leading)
             .padding(.bottom, 8)
         }
+        
+        
     }
 
 
