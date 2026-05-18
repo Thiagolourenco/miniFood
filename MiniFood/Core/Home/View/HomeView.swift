@@ -258,7 +258,13 @@ struct HomeView: View {
 extension HomeView {
     private var header: some View {
         VStack {
-            headerActions
+            Header(headerProps: HeaderProps(
+                titleHeader: "78 Street, Bangladash",
+                titleHeadline: "Delivery to",
+                iconRight: "envelope",
+                iconLeftOne: "bell",
+                iconLeftTwo: "basket"
+            ))
             
             HStack(spacing: 0) {
                 Text("What's ")
@@ -277,69 +283,8 @@ extension HomeView {
             .padding(.top)
         }
     }
-    
-    private var headerActions: some View {
-        HStack(spacing: 8) {
-            HStack {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "envelope")
-                        .foregroundStyle(.textSecondary)
-                        .font(.system(size: 14))
-                }
-                .frame(width: 40, height: 40)
-                .background(Color("White"))
-                .clipShape(Circle())
-                .shadow(color: Color("Border") ,radius: 6, y: 6)
-                
-                
-                VStack(alignment: .leading) {
-                    Text("Delivery to")
-                        .foregroundStyle(Color("Black700"))
-                        .font(.caption)
-                        .fontWeight(.regular)
-                    Text("78 Street, Bangladash")
-                        .foregroundStyle(.textPrimary)
-                        .font(.callout)
-                        .fontWeight(.medium)
-                    
-                }
-            }
-            
-            Spacer()
-            
-            Button {
-                
-            } label: {
-                Image(systemName: "bell")
-                    .foregroundStyle(.textSecondary)
-                    .font(.system(size: 14))
-                
-            }
-            .frame(width: 40, height: 40)
-            .background(Color("White"))
-            .clipShape(Circle())
-            .shadow(color: Color("Border") ,radius: 6, y: 6)
-            
-            
-            Button {
-                
-            } label: {
-                Image(systemName: "basket")
-                    .foregroundStyle(.textSecondary)
-                    .font(.system(size: 14))
-                
-            }
-            .frame(width: 40, height: 40)
-            .background(Color("White"))
-            .clipShape(Circle())
-            .shadow(color: Color("Border") ,radius: 6, y: 6)
-            
-        }
-        .padding(.horizontal)
-    }
 }
+
 #Preview {
     HomeView()
 }

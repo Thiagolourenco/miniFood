@@ -14,28 +14,15 @@ struct SettingsView: View {
             
             ScrollView {
                 VStack {
-                    HStack {
-                        HStack {
-                            Image(systemName: "person")
-                                .padding()
-                                .background(Color("White"))
-                                .shadow(radius: 4, x: 0.7, y: 0.7)
-                                .clipShape(Circle())
-                            
-                            Text("Profile")
-                        }
-                        
-                        Spacer()
-                        
-                        Image(systemName: "bell")
-                            .padding()
-                            .background(Color("White"))
-                            .shadow(radius: 4, x: 0.7, y: 0.7)
-                            .clipShape(Circle())
-                  
+                    Header(
+                        headerProps:
+                            HeaderProps(
+                                titleHeader: "Profile",
+                                iconRight: "person",
+                                iconLeftTwo: "bell")
+                    )
+                    .padding(.horizontal, 12)
 
-                    }
-                    .padding(.horizontal)
                     
                     HStack {
                         Circle()

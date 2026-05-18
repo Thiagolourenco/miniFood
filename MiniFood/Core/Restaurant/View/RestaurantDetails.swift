@@ -41,105 +41,60 @@ struct RestaurantDetails: View {
     ]
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.background.ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
-                    VStack {
-                        header
-                        
-                        cardAboutRestaurant
-                        
-                        filter
-                        
-                        listProducts
-                        Spacer()
-                    }
+        ZStack {
+            Color.background.ignoresSafeArea()
+
+            ScrollView(showsIndicators: false) {
+                VStack {
+                    Header(headerProps: HeaderProps(iconLeftOne: "heart", iconLeftTwo: "magnifyingglass", actionRight: {
+                        goBack()
+                    }))
+                    .padding(.horizontal)
+
+                    cardAboutRestaurant
+
+                    filter
+
+                    listProducts
+                    Spacer()
                 }
-                .padding(.bottom)
-             
             }
-            .toolbarVisibility(.hidden, for: .navigationBar)
-            
+            .padding(.bottom)
+
         }
-        
+        .toolbarVisibility(.hidden, for: .navigationBar)
+
     }
 }
 
 // See, if I can put the extension in another files
     extension RestaurantDetails {
-        private var header: some View {
-            HStack {
-                Button {
-                    goBack()
-                } label: {
-                    Image(systemName: "arrow.left")
-                        .foregroundStyle(.textSecondary)
-                        .font(.system(size: 14))
-                }
-                .frame(width: 40, height: 40)
-                .background(Color("White"))
-                .clipShape(Circle())
-                .shadow(color: Color("Border") ,radius: 6, y: 6)
-                
-                Spacer()
-                
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "heart")
-                            .foregroundStyle(.textSecondary)
-                            .font(.system(size: 14))
-                    }
-                    .frame(width: 40, height: 40)
-                    .background(Color("White"))
-                    .clipShape(Circle())
-                    .shadow(color: Color("Border") ,radius: 6, y: 6)
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundStyle(.textSecondary)
-                            .font(.system(size: 14))
-                    }
-                    .frame(width: 40, height: 40)
-                    .background(Color("White"))
-                    .clipShape(Circle())
-                    .shadow(color: Color("Border") ,radius: 6, y: 6)
-                }
-            }
-            .padding(.horizontal, 32)
-        }
-        
         private var listProducts: some View {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("Picks for you")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.textPrimary)
-                    Image(systemName: "flame.fill")
-                        .foregroundStyle(.yellow)
-                }
-                
-                Text("Trending items we think you love")
-                    .font(.footnote)
-                    .fontWeight(.regular)
-                    .foregroundStyle(.textSecondary.opacity(0.5))
-                
-                // montar as colunas de produtos toda a tela é envolta do scrollView
-                LazyVGrid(columns: columns, spacing: 18) {
-                    ForEach(products) { item in
-                        CardItem(nameFood: item.title, completementFood: item.subtitle, priceFood: item.price)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Picks for you")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.textPrimary)
+                        Image(systemName: "flame.fill")
+                            .foregroundStyle(.yellow)
                     }
+                    
+                    Text("Trending items we think you love")
+                        .font(.footnote)
+                        .fontWeight(.regular)
+                        .foregroundStyle(.textSecondary.opacity(0.5))
+                    
+                    // montar as colunas de produtos toda a tela é envolta do scrollView
+                    LazyVGrid(columns: columns, spacing: 18) {
+                        ForEach(products) { item in
+                            CardItem(nameFood: item.title, completementFood: item.subtitle, priceFood: item.price, navigateTo: { AnyView(ProductDetail()) })
+                        }
+                    }
+                    .padding(.top, 8)
+                    .padding(.bottom, 100)
                 }
-                .padding(.top, 8)
-                .padding(.bottom, 100)
-            }
-            .padding(.horizontal)
+                .padding(.horizontal)
 
             }
          
