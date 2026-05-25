@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+struct ValidEmailModel: Decodable {
+    let exists: Bool?
+    let authProvider: String?
+    
+    init(exists: Bool?, authProvider: String?) {
+        self.exists = exists
+        self.authProvider = authProvider
+    }
+    
+}

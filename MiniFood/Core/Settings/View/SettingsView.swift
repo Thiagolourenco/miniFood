@@ -133,6 +133,8 @@ struct SettingsView: View {
         .padding()
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 4)
+        .toolbarVisibility(.hidden, for: .navigationBar)
+
     }
 }
 

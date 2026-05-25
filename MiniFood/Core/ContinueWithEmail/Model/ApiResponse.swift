@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+struct ApiResponseError: Decodable {
+    let error: ApiErrorDetails
+}
+
+struct ApiErrorDetails: Decodable {
+    let code: String
+    let message: String
+}

@@ -19,7 +19,7 @@ struct HeaderProps {
     let titleHeadline: String?
     let iconRight: String
     let iconLeftOne: String?
-    let iconLeftTwo: String
+    let iconLeftTwo: String?
     let actionRight: () -> Void
     
     init(
@@ -27,7 +27,7 @@ struct HeaderProps {
         titleHeadline: String? = nil,
         iconRight: String = "arrow.left",
         iconLeftOne: String? = nil,
-        iconLeftTwo: String = "person.crop.circle",
+        iconLeftTwo: String? = nil,
         actionRight: @escaping () -> Void = {}
     ) {
         self.titleHeader = titleHeader
@@ -90,17 +90,20 @@ struct Header: View {
                     
                 }
                
-                Button {
-                    
-                } label: {
-                    Image(systemName: headerProps.iconLeftTwo)
-                        .foregroundStyle(.textSecondary)
-                        .font(.system(size: 14))
+                if headerProps.iconLeftTwo != nil {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: headerProps.iconLeftTwo ?? "")
+                            .foregroundStyle(.textSecondary)
+                            .font(.system(size: 14))
+                    }
+                    .frame(width: 40, height: 40)
+                    .background(Color("White"))
+                    .clipShape(Circle())
+                    .shadow(color: Color("Border") ,radius: 6, y: 6)
                 }
-                .frame(width: 40, height: 40)
-                .background(Color("White"))
-                .clipShape(Circle())
-                .shadow(color: Color("Border") ,radius: 6, y: 6)
+            
             }
         }
         .padding(.horizontal, 8)
