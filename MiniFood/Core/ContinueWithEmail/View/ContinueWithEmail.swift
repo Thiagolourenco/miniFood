@@ -167,6 +167,10 @@ struct ContinueWithEmail: View {
                             await viewModel.registerUser()
                         }
                     }
+                    
+                    Task {
+                        await viewModel.login()
+                    }
                 } label: {
                     if viewModel.isLoading {
                         ProgressView()

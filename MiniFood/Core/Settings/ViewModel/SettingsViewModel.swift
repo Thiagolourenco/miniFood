@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+@Observable
+class SettingsViewModel {
+    var isLogout: Bool = false
+    
+    func logout(sessionManager: SessionManager) {
+        sessionManager.logout()
+        isLogout = true
+    }
+}

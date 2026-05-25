@@ -13,6 +13,11 @@ struct UserModel: Codable {
     let password: String
 }
 
+struct LoginRequest: Codable {
+    let email: String
+    let password: String
+}
+
 struct UserReponse: Decodable {
     let user: User
     let accessToken: String

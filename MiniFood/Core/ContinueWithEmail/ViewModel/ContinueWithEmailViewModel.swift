@@ -77,5 +77,29 @@ class ContinueWithEmailViewModel {
         
         return
     }
+    
+    func login() async -> Void {
+        isLoading = true
+        errorMessage = nil
+        
+        defer {
+            isLoading = false
+        }
+
+        
+        do {
+            _ = try await service.login(email: email, password: password)
+
+            isLoading = false
+            shouldEnterTheApp = true
+            print("User")
+        } catch {
+            isLoading = false
+            errorMessage = error.localizedDescription
+            shouldEnterTheApp = false
+            print("Error \(error)")
+        }
+        
+    }
 }
 

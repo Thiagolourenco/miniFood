@@ -8,70 +8,77 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @State private var viewModel = SettingsViewModel()
+    @Environment(SessionManager.self) private var sessionManager
+    
     var body: some View {
-        ZStack {
-            Color.background.ignoresSafeArea()
-            
-            ScrollView {
-                VStack {
-                    Header(
-                        headerProps:
-                            HeaderProps(
-                                titleHeader: "Profile",
-                                iconRight: "person",
-                                iconLeftTwo: "bell")
-                    )
-                    .padding(.horizontal, 12)
-
-                    
-                    HStack {
-                        Circle()
-                            .frame(width: 50, height: 50)
-                        
-                        VStack(alignment: .leading) {
-                            Text("Thiago Lourenço")
-                                .font(.headline)
-                                .foregroundStyle(Color("Black"))
-                            Text("@ 012 Londor, New York")
-                        }
-                        
-                        Spacer()
-                        
-                        Image(systemName: "square.and.pencil")
-                            .font(Font.system(size: 20))
-                            .foregroundStyle(Color("TextSecondary").opacity(0.4))
-                    }
-                    .padding(.vertical)
-                    .padding(.horizontal)
-                    .background(Color("White"))
-                    .shadow(color: Color("Gray"), radius: 4, x: 0, y: 2)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .padding(.horizontal, 18)
-                    .padding(.top)
-                    
+            ZStack {
+                Color.background.ignoresSafeArea()
+                
+                ScrollView {
                     VStack {
-                        settingsSection(title: "Settings", items: [
-                            .init(icon: "star", title: "Rewards", trailing: "0 points"),
-                            .init(icon: "bag", title: "Your orders", trailingIcon: "chevron.right"),
-                            .init(icon: "banknote", title: "Balance", trailing: "$0,00"),
-                            .init(icon: "ticket", title: "Vouchers", trailingIcon: "chevron.right"),
-                            .init(icon: "tag", title: "Fresko Pro", trailingIcon: "chevron.right")
-                        ])
+                        Header(
+                            headerProps:
+                                HeaderProps(
+                                    titleHeader: "Profile",
+                                    iconRight: "person",
+                                    iconLeftTwo: "bell")
+                        )
+                        .padding(.horizontal, 12)
+
                         
-                        settingsSection(title: "Settings", items: [
-                            .init(icon: "questionmark.circle", title: "Get Help", trailingIcon: "chevron.right"),
-                            .init(icon: "info.circle", title: "About App", trailingIcon: "chevron.right"),
-                        ])
+                        HStack {
+                            Circle()
+                                .frame(width: 50, height: 50)
+                            
+                            VStack(alignment: .leading) {
+                                Text("Thiago Lourenço")
+                                    .font(.headline)
+                                    .foregroundStyle(Color("Black"))
+                                Text("@ 012 Londor, New York")
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "square.and.pencil")
+                                .font(Font.system(size: 20))
+                                .foregroundStyle(Color("TextSecondary").opacity(0.4))
+                        }
+                        .padding(.vertical)
+                        .padding(.horizontal)
+                        .background(Color("White"))
+                        .shadow(color: Color("Gray"), radius: 4, x: 0, y: 2)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .padding(.horizontal, 18)
+                        .padding(.top)
+                        
+                        VStack {
+                            settingsSection(title: "Settings", items: [
+                                .init(icon: "star", title: "Rewards", trailing: "0 points",),
+                                .init(icon: "bag", title: "Your orders", trailingIcon: "chevron.right"),
+                                .init(icon: "banknote", title: "Balance", trailing: "$0,00"),
+                                .init(icon: "ticket", title: "Vouchers", trailingIcon: "chevron.right"),
+                                .init(icon: "tag", title: "Fresko Pro", trailingIcon: "chevron.right")
+                            ])
+                            
+                            settingsSection(title: "Settings", items: [
+                                .init(icon: "questionmark.circle", title: "Get Help", trailingIcon: "chevron.right"),
+                                .init(icon: "info.circle", title: "About App", trailingIcon: "chevron.right"),
+                                .init(icon: "rectangle.portrait.and.arrow.right", title: "Logout", onAction: {
+                                    viewModel.logout(sessionManager: sessionManager)
+                                })
+                            ])
+                        }
+
+
+                        Spacer()
+
                     }
-
-
-                    Spacer()
-
                 }
-            }
-         
-          
-        }
+                .navigationDestination(isPresented: $viewModel.isLogout) {
+                    ManagerAuth()
+                }
+         }
     }
     
     func settingsSection(title: String, items: [SettingItem]) -> some View {
@@ -85,8 +92,9 @@ struct SettingsView: View {
             
             VStack(spacing: 14) {
                 ForEach(items) { item in
+                
                     Button {
-                        
+                        item.onAction?()
                     } label: {
                         HStack {
                             Image(systemName: item.icon)
@@ -116,7 +124,6 @@ struct SettingsView: View {
                         }
                     }
                     
-
                 
                 }
             }
@@ -140,4 +147,5 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environment(SessionManager())
 }

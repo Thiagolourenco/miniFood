@@ -13,11 +13,13 @@ struct SettingItem: Identifiable {
     let title: String
     let trailing: String?
     let trailingIcon: String?
+    let onAction: (() -> Void)?
 
-    init(icon: String, title: String, trailing: String? = nil, trailingIcon: String? = nil) {
+    init(icon: String, title: String, trailing: String? = nil, trailingIcon: String? = nil, onAction: (() -> Void)? = nil) {
         self.icon = icon
         self.title = title
         self.trailing = trailing
         self.trailingIcon = trailingIcon
+        self.onAction = onAction
     }
 }

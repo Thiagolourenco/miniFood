@@ -116,6 +116,7 @@ struct Login: View {
                 }
             }
             .ignoresSafeArea(edges: .top)
+            .toolbarVisibility(.hidden, for: .navigationBar)
         }
     }
 }

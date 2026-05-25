@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct MiniFoodApp: App {
+    @State private var manageSession = SessionManager()
+    
     var body: some Scene {
         WindowGroup {
-            Login()
+            ManagerAuth()
+                .environment(manageSession)
         }
     }
 }
