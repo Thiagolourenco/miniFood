@@ -13,7 +13,7 @@ struct ContinueWithEmail: View {
     @State private var showPassword: Bool = false
     @State private var showPasswordConfirm: Bool = false
     
-    @State private var viewModel: ContinueWithEmailViewModel = ContinueWithEmailViewModel(service: ContinueWithEmailService())
+    @State private var viewModel = ContinueWithEmailViewModel(service: ContinueWithEmailService())
     
     var body: some View {
         ZStack {
@@ -166,10 +166,10 @@ struct ContinueWithEmail: View {
                         Task {
                             await viewModel.registerUser()
                         }
-                    }
-                    
-                    Task {
-                        await viewModel.login()
+                    } else {
+                        Task {
+                            await viewModel.login()
+                        }
                     }
                 } label: {
                     if viewModel.isLoading {
@@ -208,4 +208,3 @@ struct ContinueWithEmail: View {
 #Preview {
     ContinueWithEmail()
 }
-

@@ -51,31 +51,30 @@ class ContinueWithEmailViewModel {
         }
         
         guard case let passwordConfirmed as String? = password, passwordConfirmed == confirmPassword else {
-            // Show toast mensage Success or Error
-            print("Deu Error")
             errorMessage = "Password is not the same"
             return
         }
         
 
         let userData = UserModel(name: name, email: email, password: password)
-        
-        print("userData \(userData)")
-        
+                
         do {
-            _ = try await service.registerUser(user: userData)
+            let result = try await service.registerUser(user: userData)
 
+            print("result", result)
             isLoading = false
             shouldEnterTheApp = true
             print("User")
+            
+            return
         } catch {
             isLoading = false
             errorMessage = error.localizedDescription
             shouldEnterTheApp = false
             print("Error \(error)")
+            
         }
         
-        return
     }
     
     func login() async -> Void {
