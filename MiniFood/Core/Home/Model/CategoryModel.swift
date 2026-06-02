@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct CategoryModel: Decodable, Identifiable {
+    let id: String
+    let name: String
+    let iconUrl: String
+}

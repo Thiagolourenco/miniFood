@@ -6,3 +6,22 @@
 //
 
 import Foundation
+
+enum HomeSectionEndpoint {
+    case categories
+    case restaurants
+    
+    var path: String {
+        switch self {
+        case .restaurants:
+            return "restaurants"
+        case .categories:
+            return "categories"
+        }
+    }
+}
+
+enum HomeSection {
+    case categories ([CategoryModel])
+    case restaurants ([RestaurantModel])
+}

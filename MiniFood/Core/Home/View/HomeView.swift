@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var search: String = ""
+    @State private var viewModel: HomeViewModel = HomeViewModel()
     
     var body: some View {
         NavigationStack {
@@ -44,14 +45,15 @@ struct HomeView: View {
                         
                         ScrollView([.horizontal], showsIndicators: false,) {
                             HStack(spacing: 12) {
-                                ForEach(0..<10) { _ in
+                                ForEach(viewModel.categoriesResult) { item in
                                     VStack {
                                         
-                                        Circle()
+                                        ImageLoader(imageUrl: item.iconUrl)
                                             .frame(width: 50, height: 50)
+                                            .clipShape(Circle())
                                         
                                         // Broke the line
-                                        Text("Fast Food")
+                                        Text(item.name)
                                             .font(.caption)
                                     }
                                     .frame(maxWidth: 50)
@@ -249,6 +251,9 @@ struct HomeView: View {
                 }
                 .navigationTitle("What's Your Graving Today?")
                 .toolbarVisibility(.hidden, for: .navigationBar)
+                .task {
+                   await viewModel.load()
+                }
                 
             }
         }
@@ -288,4 +293,3 @@ extension HomeView {
 #Preview {
     HomeView()
 }
-

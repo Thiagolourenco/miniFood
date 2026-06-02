@@ -11,6 +11,7 @@ enum AuthEndpoint {
     case validEmail
     case register
     case login
+    case refreshToken
     
     var path: String {
         switch self {
@@ -20,6 +21,8 @@ enum AuthEndpoint {
             return "auth/register"
         case .login:
             return "auth/login"
+        case .refreshToken:
+            return "auth/refresh"
         }
     }
 }

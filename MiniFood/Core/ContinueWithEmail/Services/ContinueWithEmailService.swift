@@ -70,4 +70,7 @@ struct ContinueWithEmailService: ContinueWithEmailProtocol {
         }
     }
     
+    // RefreshToken - Colocar em outra parte, analisar qual seria o melhor local
+  
+    
 }
