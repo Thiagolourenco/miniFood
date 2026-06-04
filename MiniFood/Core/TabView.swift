@@ -49,9 +49,24 @@ struct MainTabView: View {
                             }
                         } label: {
                             VStack {
-                                Image(systemName: tab.icon)
-                                    .font(.system(size: 18, weight: .regular, design: .default))
-                                    .foregroundStyle(selectedTab == tab ? Color("Primary") : Color("Black700").opacity(0.4))
+                                ZStack {
+                                    Image(systemName: tab.icon)
+                                        .font(.system(size: 18, weight: .regular, design: .default))
+                                        .foregroundStyle(selectedTab == tab ? Color("Primary") : Color("Black700").opacity(0.4))
+                                      
+                                    if tab == .orders {
+                                        Text("2")
+                                            .font(.system(size: 10, weight: .bold))
+                                            .foregroundStyle(.white)
+                                            .frame(width: 14, height: 14)
+                                            .background(
+                                                Circle()
+                                                    .fill(Color("Warning"))
+                                            )
+                                            .offset(x: 10, y: -8)
+                                    }
+                                }
+                              
 
                                 Spacer()
 

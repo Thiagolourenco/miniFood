@@ -12,7 +12,11 @@ class RestaurantViewModel {
     var restaurant: RestaurantModel? = nil
     var products: [ProductModel] = []
     
-    private let service: RestaurantService = RestaurantService()
+    var service: RestaurantProtocol
+    
+    init(service: RestaurantProtocol = RestaurantService()) {
+        self.service = service
+    }
     
     func loadRestaurantDetails(id: String) async {
         do {

@@ -72,7 +72,7 @@ struct HomeView: View {
                                     VStack() {
                                         
                                         NavigationLink {
-                                            RestaurantDetails(restaurantID: restaurant.id)
+                                            RestaurantDetails(restaurantID: restaurant.id, viewModel: RestaurantViewModel())
                                         } label:{
                                             ImageLoader(imageUrl: restaurant.imageUrl)
                                                 .frame(width: 300, height: 200)

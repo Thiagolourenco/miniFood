@@ -12,7 +12,7 @@ struct ProductDetail: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isFooterVisible = false
     
-    @State private var viewModel: ProductViewModel = ProductViewModel()
+    @State var viewModel: ProductViewModel
 
     var body: some View {
         ZStack {
@@ -44,7 +44,7 @@ struct ProductDetail: View {
                                                 .font(.title3)
                                                 .fontWeight(.bold)
                                                 .foregroundStyle(Color("TextPrimary"))
-                                                .offset(x: 106)
+                                                .offset(x: product.title.count > 15 ? 120 : 106)
                                             
                                         }
                                     Text(product.subtitle)
@@ -330,5 +330,5 @@ struct ProductDetail: View {
 }
 
 #Preview {
-    ProductDetail(productID: "bf2dc638-546e-424a-a9c1-73757755be09")
+    ProductDetail(productID: "bf2dc638-546e-424a-a9c1-73757755be09", viewModel: ProductViewModel(service: MockProductService()))
 }

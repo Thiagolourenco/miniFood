@@ -27,7 +27,7 @@ struct RestaurantDetails: View {
     @State private var showFilter: Bool = false
     @State private var filterSelected: FILTER_SELECTED = .PICKS_FOR_YOU
     
-    @State private var viewModel: RestaurantViewModel = RestaurantViewModel()
+    @State var viewModel: RestaurantViewModel
     
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
@@ -104,7 +104,7 @@ struct RestaurantDetails: View {
                                 completementFood: item.subtitle,
                                 priceFood: item.price,
                                 imageUrl: item.imageUrl,
-                                navigateTo: { AnyView(ProductDetail(productID: item.id )) }
+                                navigateTo: { AnyView(ProductDetail(productID: item.id, viewModel: ProductViewModel())) }
                             )
                         }
                     }
@@ -338,7 +338,8 @@ struct RestaurantDetails: View {
 
 #Preview {
     RestaurantDetails(
-        restaurantID: "956c8910-d731-465c-b567-c1c4b5c60419"
+        restaurantID: "956c8910-d731-465c-b567-c1c4b5c60419",
+        viewModel: RestaurantViewModel(service: MockRestaurantService()),
     )
 }
 

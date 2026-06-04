@@ -10,7 +10,11 @@ import Foundation
 @Observable
 class ProductViewModel {
     var product: ProductModel? = nil
-    private let service: ProductServiceProtocol = ProductService()
+    var service: ProductServiceProtocol
+    
+    init(service: ProductServiceProtocol = ProductService()) {
+        self.service = service
+    }
     
     func getProduct(productID: String) async {
         do {

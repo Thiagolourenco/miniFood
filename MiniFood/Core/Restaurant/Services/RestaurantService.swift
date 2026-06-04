@@ -36,7 +36,6 @@ struct RestaurantService: RestaurantProtocol {
         
         do {
             try await withThrowingTaskGroup(of: RestaurantDataResult.self) { group in
-                var section: [RestaurantDataResult] = []
                 group.addTask {
                     let restaurant = try await getRestaurants(id: id)
                     
@@ -82,7 +81,6 @@ struct RestaurantService: RestaurantProtocol {
             
             let resultData = try await client.execute(requestModel)
             
-            print("ResultProduct", resultData)
             return resultData
         }
     }
@@ -93,7 +91,6 @@ struct RestaurantService: RestaurantProtocol {
 
             let resultData = try await client.execute(requestModel)
             
-            print("result", resultData)
             return resultData
         } catch {
             throw error
@@ -102,3 +99,17 @@ struct RestaurantService: RestaurantProtocol {
 }
 
 
+final class MockRestaurantService: RestaurantProtocol {
+    func getRestaurantDetails(id: String) async throws -> RestaurantDetailsData {
+        return RestaurantDetailsData(
+            restaurant: RestaurantModel(
+                id: "009c2b16-f4e2-44d5-8037-0b286c63aa60", name: "Sushi Tokyo", category: "Sushi", rating: 4.8, deliveryTimeMin: 30, deliveryTimeMax: 45, imageUrl: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=800&q=80", logoUrl: "https://images.unsplash.com/photo-1611141647817-1bf24c2b6ec0?auto=format&fit=crop&w=200&q=80", badge: Optional("Top Rated"), promoText: nil, isFeatured: true
+            ),
+            products: [
+                ProductModel(id: "145e7e57-9649-4d30-8222-e6dab79b1e7c", restaurantId: "009c2b16-f4e2-44d5-8037-0b286c63aa60", title: "Salmon Sashimi (10pc)", subtitle: "Fresh salmon slices", description: "10 generous slices of premium, freshly cut Atlantic salmon. Served with wasabi, ginger and soy sauce.", price: "18.50", currency: "USD", rating: 4.9, reviewCount: 1530, imageUrl: "https://images.unsplash.com/photo-1607301406259-dfb186e15de8?auto=format&fit=crop&w=800&q=80", filterTag: "POPULAR", modifiers: []),
+                ProductModel(id: "f37dc16d-ddcc-4793-861f-b08ff7d1eed5", restaurantId: "009c2b16-f4e2-44d5-8037-0b286c63aa60", title: "Sushi Platter (16pc)", subtitle: "Chef selection of nigiri & maki", description: "A curated selection of 8 nigiri and 8 maki rolls, including salmon, tuna, shrimp and California rolls.", price: "32.00", currency: "USD", rating: 4.8, reviewCount: 940, imageUrl: "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80", filterTag: "PICKS_FOR_YOU", modifiers: [MiniFood.Modifier(id: "f6df1a0f-e489-4d00-bfda-23d592c5d91b", name: "Extra Wasabi", price: "0.00"), MiniFood.Modifier(id: "96e239eb-0ccf-44dd-a7a0-4172b284163a", name: "Extra Ginger", price: "0.00"), MiniFood.Modifier(id: "797a7ee0-32c4-4023-bdcb-1fb6b4b8b0d2", name: "Spicy Mayo", price: "0.50")]),
+                ProductModel(id: "3d5b638c-62f5-4e3c-8588-851966016fae", restaurantId: "009c2b16-f4e2-44d5-8037-0b286c63aa60", title: "Salmon Roll (8pc)", subtitle: "Classic salmon maki", description: "Eight pieces of fresh salmon and rice rolled in seaweed.", price: "12.50", currency: "USD", rating: 4.7, reviewCount: 720, imageUrl: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80", filterTag: "PICKS_FOR_YOU", modifiers: [])
+            ]
+        )
+    }
+}
