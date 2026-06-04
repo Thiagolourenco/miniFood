@@ -11,6 +11,7 @@ struct CardItem: View {
     let nameFood: String
     let completementFood: String
     let priceFood: String
+    let imageUrl: String
     let navigateTo: () -> AnyView
     
     var body: some View {
@@ -19,8 +20,8 @@ struct CardItem: View {
         }label: {
             VStack {
                 // Image the food
-                Rectangle()
-                    .fill(Color("Black"))
+                ImageLoader(imageUrl: imageUrl)
+                    .clipShape(Rectangle())
                     .frame(width: 100, height: 90)
                 //
                 
@@ -71,5 +72,5 @@ struct CardItem: View {
 }
 
 #Preview {
-    CardItem(nameFood: "Cheese-buguesr", completementFood: "Cheese-burguer, fries, coca-cola/sprite/fanta", priceFood: "14.99") { AnyView(Text("Destination")) }
+    CardItem(nameFood: "Cheese-buguesr", completementFood: "Cheese-burguer, fries, coca-cola/sprite/fanta", priceFood: "14.99", imageUrl: "https://images.unsplash.com/photo-1567327613485-fbc7bf196198?auto=format&fit=crop&w=800&q=80") { AnyView(Text("Destination")) }
 }

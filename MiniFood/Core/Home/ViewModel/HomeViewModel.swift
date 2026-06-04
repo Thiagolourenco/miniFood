@@ -17,10 +17,10 @@ class HomeViewModel {
     var categoriesResult: [CategoryModel] = []
     var restaurantsResult: [RestaurantModel] = []
     
-    private let service: HomeServiceProtocol = HomeService()
-
-    init() {
-        print("categories", restaurantsResult)
+    private let service: HomeServiceProtocol
+    
+    init(service: HomeServiceProtocol = HomeService()) {
+        self.service = service
     }
     
     func load() async {
@@ -30,7 +30,6 @@ class HomeViewModel {
             for section in result {
                 switch section {
                 case .categories(let categories):
-                    print("category", categories)
                     categoriesResult = categories
                 case .restaurants(let restaurants):
                     restaurantsResult = restaurants

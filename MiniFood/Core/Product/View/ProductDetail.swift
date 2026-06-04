@@ -8,27 +8,34 @@
 import SwiftUI
 
 struct ProductDetail: View {
+    @State var productID: String
     @Environment(\.dismiss) private var dismiss
     @State private var isFooterVisible = false
+    
+    @State private var viewModel: ProductViewModel = ProductViewModel()
 
     var body: some View {
         ZStack {
             Color.background.ignoresSafeArea()
-
-            VStack {
-                ScrollView(showsIndicators: false) {
+            
+            if let product = viewModel.product {
+                
+                VStack {
+                    ScrollView(showsIndicators: false) {
                         
                         Header(headerProps: HeaderProps(iconLeftTwo: "heart", actionRight: {
                             dismiss()
                         }))
                         
                         VStack {
-                            RoundedRectangle(cornerRadius: 8)
+                            ImageLoader(imageUrl: product.imageUrl)
+                                .clipShape(RoundedRectangle(cornerRadius: 8)
+                                )
                                 .frame(width: 300, height: 200)
                             
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text("Cheese-burguer")
+                                    Text(product.title)
                                         .font(.title3)
                                         .fontWeight(.medium)
                                         .foregroundStyle(Color("TextSecondary").opacity(0.4))
@@ -40,7 +47,7 @@ struct ProductDetail: View {
                                                 .offset(x: 106)
                                             
                                         }
-                                    Text("Cheese-burguer, big fries, coca-cola/sprite/fanta")
+                                    Text(product.subtitle)
                                         .foregroundStyle(Color("TextSecondary").opacity(0.4))
                                         .font(.system(size: 8, weight: .regular, design: .default))
                                 }
@@ -48,7 +55,7 @@ struct ProductDetail: View {
                                 Spacer()
                                 
                                 VStack(alignment: .trailing) {
-                                    Text("14.99")
+                                    Text(product.price)
                                         .font(.title2)
                                         .fontWeight(.medium)
                                         .overlay {
@@ -65,13 +72,13 @@ struct ProductDetail: View {
                                             .font(.system(size: 10, weight: .regular, design: .default))
                                             .foregroundStyle(.yellow)
                                         
-                                        Text("3.9")
+                                        Text("\(product.rating)")
                                             .font(.system(size: 10, weight: .regular, design: .default))
                                         
                                             .fontWeight(.bold)
                                             .foregroundStyle(Color("TextPrimary"))
                                         
-                                        Text("(120+ Reviews)")
+                                        Text("(\(product.reviewCount)+ Reviews)")
                                             .font(.system(size: 10, weight: .regular, design: .default))
                                             .foregroundStyle(Color("TextSecondary").opacity(0.4))
                                     }
@@ -221,7 +228,7 @@ struct ProductDetail: View {
                                     Text("Description")
                                         .font(.title3)
                                         .bold()
-                                    Text("A classic fast-food combo  featuing  a juicy  beef burguer with melted Cheeder cheese, a side of fries, and a drink of your choice. It comes with a bun, pickles, onios, ketchup")
+                                    Text(product.description)
                                         .font(.system(size: 10, weight: .regular, design: .default))
                                         .foregroundStyle(Color("TextSecondary").opacity(0.4))
                                 }
@@ -250,7 +257,8 @@ struct ProductDetail: View {
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack {
-                                    ForEach(0..<10) { _ in
+                                    ForEach(product.modifiers) { modifier in
+//                                        ImageLoader(imageUrl: modifier.)
                                         RoundedRectangle(cornerRadius: 8)
                                             .frame(width: 100, height: 100)
                                     }
@@ -264,10 +272,11 @@ struct ProductDetail: View {
                         
                         Spacer()
                     }
-                   
-
+                    
+                    
                 }
             }
+        }
         .hidesTabBar()
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 18) {
@@ -314,9 +323,12 @@ struct ProductDetail: View {
             }
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
+        .task {
+            await viewModel.getProduct(productID: productID)
+        }
     }
 }
 
 #Preview {
-    ProductDetail()
+    ProductDetail(productID: "bf2dc638-546e-424a-a9c1-73757755be09")
 }

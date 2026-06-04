@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State var viewModel: HomeViewModel
     @State private var search: String = ""
-    @State private var viewModel: HomeViewModel = HomeViewModel()
     
     var body: some View {
         NavigationStack {
@@ -68,57 +68,60 @@ struct HomeView: View {
                         // Virar uma exestetion 
                         ScrollView([.horizontal], showsIndicators: false) {
                             HStack(spacing: 28) {
-                                ForEach(0..<10) { _ in
+                                ForEach(viewModel.restaurantsResult) { restaurant in
                                     VStack() {
                                         
-                                        // Virar a imagem em destaque do restaurante da semana
-                                        RoundedRectangle(cornerRadius: 32)
-                                            .fill(Color.yellow)
-                                            .frame(width: 300, height: 200)
-                                            .overlay(alignment: Alignment.topLeading) {
-                                                HStack(alignment: .center) {
-                                                    HStack {
-                                                        Image(systemName: "clock.fill")
-                                                            .tint(.black)
-                                                            .foregroundStyle(.white)
-                                                        Text("~35 min")
-                                                            .font(.caption)
-                                                            .fontWeight(.regular)
-                                                            .foregroundStyle(.white)
+                                        NavigationLink {
+                                            RestaurantDetails(restaurantID: restaurant.id)
+                                        } label:{
+                                            ImageLoader(imageUrl: restaurant.imageUrl)
+                                                .frame(width: 300, height: 200)
+                                                .clipShape(RoundedRectangle(cornerRadius: 32)
+                                                )
+                                                .overlay(alignment: Alignment.topLeading) {
+                                                    HStack(alignment: .center) {
+                                                        HStack {
+                                                            Image(systemName: "clock.fill")
+                                                                .tint(.black)
+                                                                .foregroundStyle(.white)
+                                                            Text("~35 min")
+                                                                .font(.caption)
+                                                                .fontWeight(.regular)
+                                                                .foregroundStyle(.white)
+                                                            
+                                                            
+                                                        }
+                                                        .frame(width: 100, height: 32)
+                                                        .background(Material.ultraThin)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 42))
+                                                        .padding(.leading)
+                                                        .padding(.top)
                                                         
+                                                        Spacer()
                                                         
+                                                        HStack {
+                                                            Image(systemName: "truck.box")
+                                                                .tint(.black)
+                                                                .foregroundStyle(Color("TextPrimary").opacity(0.4))
+                                                            
+                                                            Text("~\(restaurant.deliveryTimeMax) min")
+                                                                .font(.caption)
+                                                                .fontWeight(.regular)
+                                                                .foregroundStyle(Color("TextPrimary").opacity(0.4))
+                                                            
+                                                            
+                                                        }
+                                                        .padding(.top)
+                                                        .padding(.trailing)
                                                     }
-                                                    .frame(width: 100, height: 32)
-                                                    .background(Material.ultraThin)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 42))
-                                                    .padding(.leading)
-                                                    .padding(.top)
                                                     
-                                                    Spacer()
-                                                    
-                                                    HStack {
-                                                        Image(systemName: "truck.box")
-                                                            .tint(.black)
-                                                            .foregroundStyle(Color("TextPrimary").opacity(0.4))
-                                                        
-                                                        Text("~35 min")
-                                                            .font(.caption)
-                                                            .fontWeight(.regular)
-                                                            .foregroundStyle(Color("TextPrimary").opacity(0.4))
-                                                        
-                                                        
-                                                    }
-                                                    .padding(.top)
-                                                    .padding(.trailing)
                                                 }
-                                                
-                                                
-                                                
-                                            }
+                                        }
+                                       
                                         // Broke the line
                                         HStack {
                                             HStack {
-                                                Text("McDonalds *")
+                                                Text(restaurant.name)
                                                     .font(.subheadline)
                                                     .foregroundStyle(.textSecondary)
                                                 Image(systemName: "flame.fill")
@@ -189,9 +192,7 @@ struct HomeView: View {
                                             .shadow(color: Color("Gray"), radius: 9, y: 6)
                                         
                                         
-                                        NavigationLink {
-                                            RestaurantDetails()
-                                        } label: {
+                                        HStack{
                                             RoundedRectangle(cornerRadius: 18)
                                                 .fill(Color("Primary"))
                                                 .frame(width: 50, height: 50)
@@ -291,5 +292,5 @@ extension HomeView {
 }
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: HomeViewModel(service: MockHomeService()))
 }

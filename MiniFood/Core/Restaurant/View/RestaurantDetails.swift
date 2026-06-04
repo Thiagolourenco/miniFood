@@ -22,9 +22,12 @@ enum FILTER_SELECTED: String, CaseIterable {
 }
 
 struct RestaurantDetails: View {
+    @State var restaurantID: String? = nil
     @Environment(\.dismiss) var goBack
     @State private var showFilter: Bool = false
     @State private var filterSelected: FILTER_SELECTED = .PICKS_FOR_YOU
+    
+    @State private var viewModel: RestaurantViewModel = RestaurantViewModel()
     
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
@@ -50,7 +53,7 @@ struct RestaurantDetails: View {
                         goBack()
                     }))
                     .padding(.horizontal)
-
+                    
                     cardAboutRestaurant
 
                     filter
@@ -58,6 +61,14 @@ struct RestaurantDetails: View {
                     listProducts
                     Spacer()
                 }
+            }
+//            .onAppear {
+//                guard let id = restaurantID else { return }
+//                viewModel.loadRestaurantDetails(id: id)
+//            }
+            .task {
+                guard let id = restaurantID else { return }
+                await viewModel.loadRestaurantDetails(id: id)
             }
             .padding(.bottom)
 
@@ -87,8 +98,14 @@ struct RestaurantDetails: View {
                     
                     // montar as colunas de produtos toda a tela é envolta do scrollView
                     LazyVGrid(columns: columns, spacing: 18) {
-                        ForEach(products) { item in
-                            CardItem(nameFood: item.title, completementFood: item.subtitle, priceFood: item.price, navigateTo: { AnyView(ProductDetail()) })
+                        ForEach(viewModel.products) { item in
+                            CardItem(
+                                nameFood: item.title,
+                                completementFood: item.subtitle,
+                                priceFood: item.price,
+                                imageUrl: item.imageUrl,
+                                navigateTo: { AnyView(ProductDetail(productID: item.id )) }
+                            )
                         }
                     }
                     .padding(.top, 8)
@@ -100,30 +117,33 @@ struct RestaurantDetails: View {
          
         
         private var cardAboutRestaurant: some View {
+         
             ZStack {
-                RoundedRectangle(cornerRadius: 18)
-                    .fill(Color("White"))
-                    .frame(height: 150)
-                    .frame(maxWidth: .infinity)
-                    .shadow(color: Color("Gray"), radius: 2, y: 8)
+                if let restaurant = viewModel.restaurant {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(Color("White"))
+                        .frame(height: 150)
+                        .frame(maxWidth: .infinity)
+                        .shadow(color: Color("Gray"), radius: 2, y: 8)
                 
                 VStack {
                     HStack() {
-                        RoundedRectangle(cornerRadius: 12)
+                        ImageLoader(imageUrl: restaurant.imageUrl)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                             .frame(width: 100, height: 90)
                         
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Fast Food company")
                                 .font(.system(size: 8, weight: .regular, design: .default))
                                 .foregroundStyle(.gray.opacity(0.5))
-                            Text("McDonnalds")
+                            Text(restaurant.name)
                                 .font(.headline)
                                 .foregroundStyle(.textPrimary)
                             HStack {
                                 Image(systemName: "clock")
                                     .foregroundStyle(.gray.opacity(0.5))
                                     .font(.system(size: 16, weight: .regular, design: .default))
-                                Text("45-60 mins")
+                                Text("\(restaurant.deliveryTimeMin)-\(restaurant.deliveryTimeMax) mins")
                                     .font(.footnote)
                                     .foregroundStyle(.gray.opacity(0.5))
                             }
@@ -139,7 +159,7 @@ struct RestaurantDetails: View {
                                     .font(.system(size: 8, weight: .regular, design: .default))
                                     .foregroundStyle(.yellow)
                                 
-                                Text("4.5")
+                                Text(String("\(restaurant.rating)"))
                                     .foregroundStyle(.white)
                                     .font(.system(size: 8, weight: .regular, design: .default))
                                 
@@ -187,6 +207,8 @@ struct RestaurantDetails: View {
                 .padding()
                 .padding(.top)
                 .frame(height: 90)
+                    
+                }
             }
             .padding(.horizontal, 18)
             .padding(.bottom, 8)
@@ -315,6 +337,8 @@ struct RestaurantDetails: View {
 
 
 #Preview {
-    RestaurantDetails()
+    RestaurantDetails(
+        restaurantID: "956c8910-d731-465c-b567-c1c4b5c60419"
+    )
 }
 

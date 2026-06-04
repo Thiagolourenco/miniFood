@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+enum ProductEndpoint {
+    case restaurantsByProduct(restaurantID: String)
+    case getProduct(productID: String)
+    
+    var path: String {
+        switch self {
+        case .restaurantsByProduct(let restaurantID):
+            return "restaurants/\(restaurantID)/products"
+        case .getProduct(let productID):
+            return "products/\(productID)"
+        }
+    }
+}

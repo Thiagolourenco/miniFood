@@ -13,10 +13,10 @@ enum HomeSectionEndpoint {
     
     var path: String {
         switch self {
-        case .restaurants:
-            return "restaurants"
         case .categories:
             return "categories"
+        case .restaurants:
+            return "restaurants"
         }
     }
 }

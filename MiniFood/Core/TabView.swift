@@ -18,7 +18,7 @@ struct MainTabView: View {
             Group {
                 switch selectedTab {
                 case .home:
-                    HomeView()
+                    HomeView(viewModel: HomeViewModel())
                         .animation(.bouncy(duration: 0.4), value: showVisibleTest)
                         .onAppear {
                             withAnimation(.bouncy) {
@@ -26,11 +26,11 @@ struct MainTabView: View {
                             }
                         }
                 case .orders:
-                    HomeView()
+                    HomeView(viewModel: HomeViewModel())
                 case .privacy:
-                    HomeView()
+                    HomeView(viewModel: HomeViewModel())
                 case .profile:
-                    HomeView()
+                    HomeView(viewModel: HomeViewModel())
                 case .settings:
                     SettingsView()
                 }

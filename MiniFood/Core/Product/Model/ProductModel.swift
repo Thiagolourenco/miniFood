@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Modifier: Codable {
+struct Modifier: Codable, Identifiable {
     let id: String
     let name: String
     let price: String
