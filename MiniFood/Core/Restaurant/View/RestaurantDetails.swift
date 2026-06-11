@@ -106,7 +106,9 @@ struct RestaurantDetails: View {
                                 priceFood: item.price,
                                 imageUrl: item.imageUrl,
                                 navigateTo: { AnyView(ProductDetail(productID: item.id, viewModel: ProductViewModel())) },
-                                addNewProduct: cartManager.addCart
+                                addNewProduct: {
+                                    cartManager.addCart(cartItem: item)
+                                }
                             )
                         }
                     }

@@ -9,18 +9,19 @@ import Foundation
 
 @Observable
 class CartManager {
-    var cart: [CartModel] = [
-        CartModel(id: "123", name: "Produto 1"),
-        CartModel(id: "1234", name: "Produto 2"),
-        CartModel(id: "12343", name: "Produto 2"),
-
-    ]
+    var cart: [ProductModel] = []
     var count: Int {
         cart.count
     }
     
     // teste
-    func addCart() {
-        cart.append(CartModel(id: "122343", name: "Produto 2"))
+    func addCart(cartItem: ProductModel) {
+        // ADicionar validação para produtos que esteja duplicado, gerando um contador para mostrar a quantidade, e não duplicando o mesmo id dentro do array
+//        if let productExists = cart.first(where: { $0.id == cartItem.id }) {
+//            productExists.price += cartItem.price
+//            return
+//        }
+        
+        cart.append(cartItem)
     }
 }
