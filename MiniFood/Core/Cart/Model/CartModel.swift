@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct CartModel: Codable, Identifiable {
+    let id: String
+    let name: String
+}

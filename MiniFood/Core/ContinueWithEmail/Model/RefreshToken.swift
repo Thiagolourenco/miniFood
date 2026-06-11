@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct RefreshToken: Decodable {
+
+nonisolated struct RefreshToken: Decodable, Sendable {
     let accessToken: String
     let refreshToken: String
 }

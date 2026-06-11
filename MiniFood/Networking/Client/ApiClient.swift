@@ -29,10 +29,12 @@ struct ApiClient {
         
         if httpResponse.statusCode == 401 {
             let resulRetry = try await AuthInterceptors<Response>(
-                baseURL: baseURL,
-                decoder: decoder,
-                requestModel: requestModel,
-                headers: headers).retry()
+                    baseURL: baseURL,
+                    decoder: decoder,
+                    requestModel: requestModel,
+                    headers: headers,
+                )
+                .retry()
             
             return resulRetry
         }

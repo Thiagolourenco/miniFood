@@ -11,6 +11,7 @@ struct MainTabView: View {
     @State private var selectedTab: TabItemModel = .home
     @State private var isTabBarVisible = true
     @State private var showVisibleTest: Bool = false
+    @Environment(CartManager.self) private var cartManager
 
     var body: some View {
         ZStack() {
@@ -54,8 +55,8 @@ struct MainTabView: View {
                                         .font(.system(size: 18, weight: .regular, design: .default))
                                         .foregroundStyle(selectedTab == tab ? Color("Primary") : Color("Black700").opacity(0.4))
                                       
-                                    if tab == .orders {
-                                        Text("2")
+                                    if tab == .orders && cartManager.count != 0 {
+                                        Text(String("\(cartManager.count)"))
                                             .font(.system(size: 10, weight: .bold))
                                             .foregroundStyle(.white)
                                             .frame(width: 14, height: 14)

@@ -13,6 +13,7 @@ struct CardItem: View {
     let priceFood: String
     let imageUrl: String
     let navigateTo: () -> AnyView
+    let addNewProduct: () -> Void
     
     var body: some View {
         NavigationLink {
@@ -47,7 +48,7 @@ struct CardItem: View {
                     Spacer()
                     
                     Button {
-                        
+                        addNewProduct()
                     } label: {
                         Image(systemName: "plus")
                             .font(.system(size: 16, weight: .regular, design: .default))
@@ -72,5 +73,6 @@ struct CardItem: View {
 }
 
 #Preview {
-    CardItem(nameFood: "Cheese-buguesr", completementFood: "Cheese-burguer, fries, coca-cola/sprite/fanta", priceFood: "14.99", imageUrl: "https://images.unsplash.com/photo-1567327613485-fbc7bf196198?auto=format&fit=crop&w=800&q=80") { AnyView(Text("Destination")) }
-}
+    CardItem(nameFood: "Cheese-buguesr", completementFood: "Cheese-burguer, fries, coca-cola/sprite/fanta", priceFood: "14.99", imageUrl: "https://images.unsplash.com/photo-1567327613485-fbc7bf196198?auto=format&fit=crop&w=800&q=80" ) { AnyView(Text("Destination")) } addNewProduct: {
+        
+    }}

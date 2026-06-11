@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @State var viewModel: HomeViewModel
     @State private var search: String = ""
-    
+
     var body: some View {
         NavigationStack {
             ZStack {

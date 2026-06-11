@@ -26,7 +26,8 @@ struct RestaurantDetails: View {
     @Environment(\.dismiss) var goBack
     @State private var showFilter: Bool = false
     @State private var filterSelected: FILTER_SELECTED = .PICKS_FOR_YOU
-    
+    @Environment(CartManager.self) private var cartManager
+
     @State var viewModel: RestaurantViewModel
     
     let columns: [GridItem] = [
@@ -104,7 +105,8 @@ struct RestaurantDetails: View {
                                 completementFood: item.subtitle,
                                 priceFood: item.price,
                                 imageUrl: item.imageUrl,
-                                navigateTo: { AnyView(ProductDetail(productID: item.id, viewModel: ProductViewModel())) }
+                                navigateTo: { AnyView(ProductDetail(productID: item.id, viewModel: ProductViewModel())) },
+                                addNewProduct: cartManager.addCart
                             )
                         }
                     }

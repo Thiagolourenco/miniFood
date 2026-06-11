@@ -13,15 +13,19 @@ final class AuthInterceptors<Response: Decodable> {
     var requestModel: ApiRequest<Response>
     var headers: [String: String]
     
+    let tokenManager: TokenManager
+    
     init(baseURL: URL, decoder: JSONDecoder, requestModel: ApiRequest<Response>, headers: [String : String]) {
         self.baseURL = baseURL
         self.decoder = decoder
         self.requestModel = requestModel
         self.headers = headers
+        self.tokenManager = TokenManager(baseURL: baseURL)
     }
     
+    
     func retry() async throws -> Response {
-        try await refreshToken()
+        try await tokenManager.refreshIfNeeded()
         
         if let accessToken = KeychainService.shared.read(key: "accessToken"), !accessToken.isEmpty {
             self.headers["Authorization"] = "Bearer \(accessToken)"
@@ -47,37 +51,4 @@ final class AuthInterceptors<Response: Decodable> {
         return try JSONDecoder().decode(Response.self, from: data)
     }
     
-    private func refreshToken() async throws {
-        guard let refreshToken = KeychainService.shared.read(key: "refreshToken") else {
-            throw AuthServiceError.api(message: "Token invalid")
-        }
-        
-        let url = baseURL.appending(path: APIRoute.auth(.refreshToken).path)
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = HttpMethod.post.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let payload = try JSONEncoder().encode(["refreshToken": refreshToken])
-        request.httpBody = payload
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw AuthServiceError.api(message: "Ocurred error")
-        }
-
-        guard (200...299).contains(httpResponse.statusCode) else {
-            KeychainService.shared.delete(key: "accessToken")
-            KeychainService.shared.delete(key: "refreshToken")
-            
-            return
-        }
-
-        let resultData = try JSONDecoder().decode(RefreshToken.self, from: data)
-        
-        KeychainService.shared.save(key: "accessToken", value: resultData.accessToken)
-        KeychainService.shared.save(key: "refreshToken", value: resultData.refreshToken)
-
-    }
 }
